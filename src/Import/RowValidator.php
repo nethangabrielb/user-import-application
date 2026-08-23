@@ -33,4 +33,20 @@ class RowValidator
         // if both checks passed, return an empty array — no errors
         return $errors;
     }
+
+    public function validateEmail(string $email): array
+    {
+        $errors = [];
+
+        // check: is email a valid email format?
+        $isValidEmail = filter_var('$email', FILTER_VALIDATE_EMAIL);
+
+        // if invalid, push an error message describing what's wrong
+        if(!$isValidEmail) {
+            $errors[] = "Invalid email";
+        }
+
+        // return $errors, empty means valid
+        return $errors;
+    }
 }
