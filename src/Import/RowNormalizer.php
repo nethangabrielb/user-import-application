@@ -11,13 +11,13 @@ class RowNormalizer
         $updatedArray = [];
 
         // capitalize first name
-        $updatedArray[] = ucfirst(strtolower($row[0])).trim();
+        $updatedArray[] = ucfirst(strtolower(trim($row[0])));
 
         // capitalize surname
-        $updatedArray[] = ucfirst(strtolower($row[1])).trim();;
+        $updatedArray[] = ucfirst(strtolower(trim($row[1])));
 
         // lowercase email
-        $updatedArray[] = strtolower($row[2]).trim();
+        $updatedArray[] = strtolower(trim($row[2]));
 
         // return a new array with the 3 normalized values, same order
         return $updatedArray;

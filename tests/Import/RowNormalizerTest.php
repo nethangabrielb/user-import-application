@@ -9,5 +9,36 @@ use PHPUnit\Framework\TestCase;
 
 class RowNormalizerTest extends TestCase
 {
-    // TODO
+    public function testNormalizesNamesToTitleCase(): void
+    {
+        $normalizer = new RowNormalizer();
+
+        $testRow = ['jOHn', 'sMIth', 'john@example.com'];
+
+        $result = $normalizer->normalize($testRow);
+
+        $this->assertSame(['John', 'Smith', 'john@example.com'], $result);
+    }
+
+    public function testNormalizesEmailToLowerCase(): void
+    {
+        $normalizer = new RowNormalizer();
+
+        $testRow = ['john', 'smith', 'JOHN.SMITH@EXAMPLE.COM'];
+
+        $result = $normalizer->normalize($testRow);
+
+        $this->assertSame(['John', 'Smith', 'john.smith@example.com'], $result);
+    }
+
+    public function testTrimsWhitespaceAroundFields(): void
+    {
+        $normalizer = new RowNormalizer();
+
+        $testRow =  ['  john  ', ' smith ', ' john.smith@example.com '];
+
+        $result = $normalizer->normalize($testRow);
+        
+        $this->assertSame(['John', 'Smith', 'john.smith@example.com'], $result);
+    }
 }
