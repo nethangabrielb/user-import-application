@@ -34,12 +34,12 @@ class RowValidator
         return $errors;
     }
 
-    public function validateEmail(string $email): array
+    public function validateEmail(array $row): array
     {
         $errors = [];
 
         // check: is email a valid email format?
-        $isValidEmail = filter_var('$email', FILTER_VALIDATE_EMAIL);
+        $isValidEmail = filter_var($row[2], FILTER_VALIDATE_EMAIL);
 
         // if invalid, push an error message describing what's wrong
         if(!$isValidEmail) {
