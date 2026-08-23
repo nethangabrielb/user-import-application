@@ -1,0 +1,2 @@
+-- TODO: CREATE TABLE users (name, surname, email UNIQUE, ...)
+-- This should match whatever --create-table builds at runtime.
