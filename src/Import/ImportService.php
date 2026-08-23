@@ -44,9 +44,8 @@ class ImportService
             $errors = $this->validator->validateRow($row);
             if (count($errors) > 0) {
                 $result->addInvalid($index, $row, $errors);
-            } else {
                 continue;
-            }
+            } 
 
             // normalize the row if valid
             [$name, $surname, $email] = $this->normalizer->normalize($row); 
@@ -55,7 +54,6 @@ class ImportService
             $isDuplicate = $this->deduplicator->isDuplicate($email);
             if ($isDuplicate) {
                 $result->addDuplicate($index, [$name, $surname, $email], $email);
-            } else {
                 continue;
             }
 
@@ -63,9 +61,8 @@ class ImportService
             $isDuplicateDb = $this->userRepository->emailExists($email);
             if ($isDuplicateDb) {
                 $result->addDuplicate($index, [$name, $surname, $email], $email);
-            } else {
                 continue;
-            }
+            } 
             
             // database persistence if not dry run
             if (!$isDryRun && $userRepository) {
