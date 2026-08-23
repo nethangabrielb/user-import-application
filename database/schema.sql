@@ -1,2 +1,6 @@
--- TODO: CREATE TABLE users (name, surname, email UNIQUE, ...)
--- This should match whatever --create-table builds at runtime.
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    surname VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE
+);
