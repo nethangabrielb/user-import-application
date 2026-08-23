@@ -72,8 +72,8 @@ class ImportService
             // record the validated, normalized row as successfully imported in ImportResult
             $result->addImported([$name, $surname, $email]);
 
-            // return the completed ImportResult
-            return $result.toArray();
-        }
+            }
+        // return the completed ImportResult
+        return $result.toArray();
     }
 }
