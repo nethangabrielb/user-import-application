@@ -51,7 +51,7 @@ class RowValidatorTest extends TestCase
         
         $testRow = ['john', 'smith', 'invalid-email'];
 
-        $errors = $validator->validateEmail($testRow);
+        $errors = $validator->validateRow($testRow);
 
         $this->assertNotEmpty($errors);
         $this->assertContains("Invalid email", $errors);

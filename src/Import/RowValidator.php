@@ -6,47 +6,29 @@ namespace App\Import;
 
 class RowValidator
 {
-    public function validateRow(array $row): array
-    {   
-        $errors = [];
-
-        // check: does $row have exactly 3 elements?
-        $validShape = count($row) === 3; 
-
-        // check: is any of the 3 fields empty?
-        $nonEmptyFields = true;
+    public function validateRow(array $row): array                                                      
+    {                                                                                                   
+        $errors = [];                                                                                   
+                                                                                                        
+        // check shape                                                                               
+        if (count($row) !== 3) {                                                                        
+            $errors[] = "Invalid field shape";                                                          
+            return $errors; 
+        }                                                                                               
+                                                                                                        
+        // check for empty/whitespace-only fields                                                    
         foreach ($row as $field) {
-            if (strlen($field) === 0) {
-                $nonEmptyFields = false;
+            if (strlen(trim($field)) === 0) {
+                $errors[] = "Invalid value";
+                break; 
             }
         }
-
-        // if either check failed, build an array of error message strings describing what's wrong, and return it
-        if (!$validShape) {
-            $errors[] = "Invalid field shape";
-        }
-
-        if (!$nonEmptyFields) {
-            $errors[] = "Invalid value";
-        }
-
-        // if both checks passed, return an empty array — no errors
-        return $errors;
-    }
-
-    public function validateEmail(array $row): array
-    {
-        $errors = [];
-
-        // check: is email a valid email format?
-        $isValidEmail = filter_var($row[2], FILTER_VALIDATE_EMAIL);
-
-        // if invalid, push an error message describing what's wrong
-        if(!$isValidEmail) {
+  
+        // check email format
+        if (!empty(trim($row[2])) && !filter_var(trim($row[2]), FILTER_VALIDATE_EMAIL)) {
             $errors[] = "Invalid email";
         }
-
-        // return $errors, empty means valid
+  
         return $errors;
     }
 }
