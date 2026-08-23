@@ -19,9 +19,9 @@ class ImportService
         ?Deduplicator $deduplicator = null,
         ?UserRepository $userRepository = null
     ) {
-        $this->validator = $validator;
-        $this->normalizer = $normalizer;
-        $this->deduplicator = $deduplicator;
+        $this->validator = $validator ?? new RowValidator();
+        $this->normalizer = $normalizer ?? new RowNormalizer();
+        $this->deduplicator = $deduplicator ?? new Deduplicator();
         $this->userRepository = $userRepository;
     }
 
