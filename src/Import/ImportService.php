@@ -58,15 +58,17 @@ class ImportService
             }
 
             // database deduplication
-            $isDuplicateDb = $this->userRepository->emailExists($email);
-            if ($isDuplicateDb) {
-                $result->addDuplicate($index, [$name, $surname, $email], $email);
-                continue;
-            } 
+            if ($this->userRepository) {
+                $isDuplicateDb = $this->userRepository->emailExists($email);
+                if ($isDuplicateDb) {
+                    $result->addDuplicate($index, [$name, $surname, $email], $email);
+                    continue;
+                } 
+            }
             
             // database persistence if not dry run
-            if (!$isDryRun && $userRepository) {
-                $userRepository->insertUser($name, $surname, $email);
+            if (!$isDryRun && $this->userRepository) {
+                $this->userRepository->insertUser($name, $surname, $email);
             }
             
             // record the validated, normalized row as successfully imported in ImportResult
@@ -74,6 +76,6 @@ class ImportService
 
             }
         // return the completed ImportResult
-        return $result.toArray();
+        return $result;
     }
 }
