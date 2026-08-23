@@ -6,5 +6,20 @@ namespace App\Import;
 
 class RowNormalizer
 {
-    // TODO
+    public function normalize(array $row): array
+    {
+        $updatedArray = [];
+
+        // capitalize first name
+        $updatedArray[] = ucfirst(strtolower($row[0]));
+
+        // capitalize surname
+        $updatedArray[] = ucfirst(strtolower($row[1]));
+
+        // lowercase email
+        $updatedArray[] = strtolower($row[2]);
+
+        // return a new array with the 3 normalized values, same order
+        return $updatedArray;
+    }
 }
