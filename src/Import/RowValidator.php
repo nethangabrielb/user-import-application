@@ -6,7 +6,7 @@ namespace App\Import;
 
 class RowValidator
 {
-    public function validate(array $row): array
+    public function validateRow(array $row): array
     {   
         $errors = [];
 
@@ -15,8 +15,8 @@ class RowValidator
 
         // check: is any of the 3 fields empty?
         $nonEmptyFields = true;
-        foreach ($nonEmptyFields as $field) {
-            if (trlen($item) === 0) {
+        foreach ($row as $field) {
+            if (strlen($field) === 0) {
                 $nonEmptyFields = false;
             }
         }
@@ -31,8 +31,6 @@ class RowValidator
         }
 
         // if both checks passed, return an empty array — no errors
-        if ($validShape && $nonEmptyFields) {
-            return $errors;
-        }
+        return $errors;
     }
 }
