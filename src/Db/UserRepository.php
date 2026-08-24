@@ -21,6 +21,7 @@ class UserRepository
     {
         // prepare and execute the CREATE TABLE IF NOT EXISTS statement
         $sql = "
+            DROP TABLE IF EXISTS users;
             CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
                 name VARCHAR(255) NOT NULL,
