@@ -19,7 +19,7 @@ class RowValidator
         // check for empty/whitespace-only fields                                                    
         foreach ($row as $field) {
             if (strlen(trim($field)) === 0) {
-                $errors[] = "Invalid value";
+                $errors[] = "Invalid name/surname";
                 break; 
             }
         }
