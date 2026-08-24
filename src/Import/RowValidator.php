@@ -16,16 +16,17 @@ class RowValidator
             return $errors; 
         }                                                                                               
                                                                                                         
-        // check for empty/whitespace-only fields                                                    
-        foreach ($row as $field) {
-            if (strlen(trim($field)) === 0) {
-                $errors[] = "Invalid name/surname";
-                break; 
-            }
+        // check for empty/whitespace-only fields for name, surname                                                
+        if (trim($row[0]) === '') {
+            $errors[] = "Invalid name";
+        }
+  
+        if (trim($row[1]) === '') {
+            $errors[] = "Invalid surname";
         }
   
         // check email format
-        if (!empty(trim($row[2])) && !filter_var(trim($row[2]), FILTER_VALIDATE_EMAIL)) {
+        if (empty(trim($row[2])) || !filter_var(trim($row[2]), FILTER_VALIDATE_EMAIL)) {
             $errors[] = "Invalid email";
         }
   
