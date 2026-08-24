@@ -1,5 +1,6 @@
 import { useDropzone } from "react-dropzone";
 import { useState } from "react";
+import toast from "sonner";
 
 export const CsvUploader = ({ onUpload }) => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -11,6 +12,15 @@ export const CsvUploader = ({ onUpload }) => {
       const file = acceptedFiles[0];
       setSelectedFile(file);
       onUpload(file);
+    },
+    onError: (fileRejections) => {
+      fileRejections.forEach((file) => {
+        file.errors.forEach((error) => {
+          toast.error(
+            `Error uploading file ${file.file.name}: ${error.message}`,
+          );
+        });
+      });
     },
   });
 
