@@ -42,7 +42,7 @@ class RowValidatorTest extends TestCase
         $errors = $validator->validateRow($testRow);
 
         $this->assertNotEmpty($errors);
-        $this->assertContains("Invalid value", $errors);
+        $this->assertContains("Invalid name", $errors);
     }
 
     public function testInvalidEmailFormatFailsValidation(): void
