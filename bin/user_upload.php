@@ -76,7 +76,7 @@ if (isset($options["file"])) {
     $pdo = $connection->getPdo();
     $userRepository = new UserRepository($pdo);
   } catch (\PDOException $e) {
-    if (!isDryRun) {
+    if (!$isDryRun) {
       fwrite(STDERR, "Database Connection Error: " . $e->getMessage() . "\n");
       exit(1);
     }
