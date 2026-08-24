@@ -40,10 +40,12 @@ class ImportService
         $this->deduplicator->reset();
 
         foreach($rows as $index => $row) {
+            $rowNumber = $index + 2;    
+
             // validate the row 
             $errors = $this->validator->validateRow($row);
             if (count($errors) > 0) {
-                $result->addInvalid($index, $row, $errors);
+                $result->addInvalid($rowNumber, $row, $errors);
                 continue;
             } 
 
@@ -53,7 +55,7 @@ class ImportService
             // check if the normalized email is a duplicate in this CSV
             $isDuplicate = $this->deduplicator->isDuplicate($email);
             if ($isDuplicate) {
-                $result->addDuplicate($index, [$name, $surname, $email], $email);
+                $result->addDuplicate($rowNumber, [$name, $surname, $email], $email);
                 continue;
             }
 
@@ -61,7 +63,7 @@ class ImportService
             if ($this->userRepository) {
                 $isDuplicateDb = $this->userRepository->emailExists($email);
                 if ($isDuplicateDb) {
-                    $result->addDuplicate($index, [$name, $surname, $email], $email);
+                    $result->addDuplicate($rowNumber, [$name, $surname, $email], $email);
                     continue;
                 } 
             }
