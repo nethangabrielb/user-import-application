@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 import {
   Upload,
@@ -31,6 +30,7 @@ import {
 import { CsvUploader } from "@/components/CsvUploader";
 import { useMutation } from "@tanstack/react-query";
 import { CountSummary } from "@/components/CountSummary";
+import { cn } from "@/lib/utils";
 
 function App() {
   const [file, setFile] = useState(null);
@@ -58,8 +58,8 @@ function App() {
       toast.success("CSV preview loaded successfully!");
     },
     onError: (error) => {
-      toast.error(`Error loading CSV preview: ${error.message}`);
       setPreviewData(null);
+      toast.error(`Error loading CSV preview: ${error.message}`);
     },
   });
 
@@ -107,7 +107,63 @@ function App() {
           </p>
         </header>
 
-        {previewData ? (
+        {/* IMPORT RESULTS */}
+        {importResult ? (
+          <div className="w-full space-y-6">
+            {/* Success Banner */}
+            <Card className="text-center p-6 border-emerald-200bg-emerald-50/30">
+              <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto mb-2" />
+              <CardTitle className="text-emerald-900">
+                Import Successful!
+              </CardTitle>
+              <CardDescription className="text-emerald-700">
+                {importResult.counts.imported} records have been added to
+                PostgreSQL.
+              </CardDescription>
+            </Card>
+
+            {/* Table of the successfully imported users */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Imported Records</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="max-h-64 overflow-y-auto border rounded-md">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Surname</TableHead>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Status</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {importResult.imported.map(
+                        ([name, surname, email], idx) => (
+                          <TableRow key={idx}>
+                            <TableCell>{name}</TableCell>
+                            <TableCell>{surname}</TableCell>
+                            <TableCell>{email}</TableCell>
+                            <TableCell>
+                              <Badge variant="success">Imported</Badge>
+                            </TableCell>
+                          </TableRow>
+                        ),
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button onClick={handleReset} className="w-full">
+                  Import Another File
+                </Button>
+              </CardFooter>
+            </Card>
+          </div>
+        ) : // PREVIEW DATA
+        previewData ? (
           <div className="w-full space-y-6">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <CountSummary
@@ -204,13 +260,18 @@ function App() {
                     Import Another File
                   </Button>
                   <Button
-                    onClick={importCsvMutation.mutate}
+                    onClick={() => importCsvMutation.mutate(file)}
                     disabled={
                       previewData.counts.imported === 0 ||
-                      importCsvMutation.isLoading
+                      importCsvMutation.isPending
                     }
+                    className={cn(
+                      importCsvMutation.isPending && "animate-pulse",
+                    )}
                   >
-                    Import Valid Users
+                    {importCsvMutation.isPending
+                      ? "Importing..."
+                      : "Import Valid Users"}
                   </Button>
                 </div>
               </CardFooter>
