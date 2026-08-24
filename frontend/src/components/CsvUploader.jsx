@@ -2,7 +2,7 @@ import { useDropzone } from "react-dropzone";
 import { useState } from "react";
 
 export const CsvUploader = ({ onUpload }) => {
-  const [selectedFile, setSelectedFile] = (useState < File) | (null > null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { "text/csv": [".csv"] },
@@ -17,13 +17,13 @@ export const CsvUploader = ({ onUpload }) => {
   return (
     <div
       {...getRootProps()}
-      className="border-2 border-dashed rounded-lg p-8 text-center cursor-pointer"
+      className="border-2 border-dashed rounded-lg p-8 text-center cursor-pointer w-full max-w-md mx-auto bg-slate-50 hover:bg-slate-100 transition-colors border-slate-300"
     >
       <input {...getInputProps()} />
       {isDragActive ? (
-        <p>Drop the CSV here...</p>
+        <p className="text-slate-600">Drop the CSV here...</p>
       ) : (
-        <p>
+        <p className="text-slate-600">
           {selectedFile
             ? selectedFile.name
             : "Drag a CSV file here, or click to select"}
