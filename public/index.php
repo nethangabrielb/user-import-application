@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 $httpMethod = $_SERVER['REQUEST_METHOD'];
 $urlPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-if ($httpMethod === "POST" && $urlPath === "/api/preview") {
+function processImportRequest(bool $isDryRun) {
   $file = $_FILES['file'] ?? null;
 
   // handle errors if file doesnt exist and not readable
@@ -60,12 +60,23 @@ if ($httpMethod === "POST" && $urlPath === "/api/preview") {
   // initialize service with user repository for dupes checking
   // and initiate dry run
   $importService = new ImportService(userRepository: $userRepository);
-  $result = $importService->process($rows, isDryRun: true);
-  
+  $result = $importService->process($rows, isDryRun: $isDryRun);
+
   http_response_code(200);
   echo json_encode($result->toArray());
   exit;
 }
+
+if ($httpMethod === "POST" && $urlPath === "/api/preview") {
+  processImportRequest(true);
+} elseif ($httpMethod === "POST" && $urlPath ===           
+"/api/import") {
+  processImportRequest(false);
+}
+
+http_response_code(404);
+echo json_encode(['error' => 'Route not found']);          
+exit;
 
 
 
