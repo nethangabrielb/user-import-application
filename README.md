@@ -1,6 +1,6 @@
 # User Import Application
 
-A simple PHP and React application that is designed to parse, validate, normalize, and import user records from CSV files into a PostgreSQL database. The application provides both a command-line interface (CLI) and a web interface (React).
+A PHP and React application for parsing, validating, normalizing, and importing user records from CSV files into PostgreSQL, with both CLI and web interface.
 
 ---
 
