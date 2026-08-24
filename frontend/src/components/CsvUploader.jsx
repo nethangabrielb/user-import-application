@@ -1,6 +1,6 @@
 import { useDropzone } from "react-dropzone";
 import { useState } from "react";
-import toast from "sonner";
+import { toast } from "sonner";
 
 export const CsvUploader = ({ onUpload }) => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -13,7 +13,7 @@ export const CsvUploader = ({ onUpload }) => {
       setSelectedFile(file);
       onUpload(file);
     },
-    onError: (fileRejections) => {
+    onDropRejected: (fileRejections) => {
       fileRejections.forEach((file) => {
         file.errors.forEach((error) => {
           toast.error(
